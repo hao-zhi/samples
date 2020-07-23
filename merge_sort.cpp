@@ -1,5 +1,6 @@
 #include <vector>
 #include<iostream>
+
 using namespace std;
 void merge(vector<int>& a, int left,int mid, int right, vector<int>& b){
 	int i = left;
