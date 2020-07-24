@@ -25,17 +25,17 @@ int divide(int left, int right, vector<int>& s){
 	swap(s[left], s[l-1]);
 	return l-1;
 }
-void quik_sort(int left, int right, vector<int>& s){
+void quick_sort(int left, int right, vector<int>& s){
 	if (left < right){
 
 		int pivot = divide(left, right, s);
-		quik_sort(left, pivot - 1, s);
-		quik_sort(pivot + 1, right, s);
+		quick_sort(left, pivot - 1, s);
+		quick_sort(pivot + 1, right, s);
 	}
 }
 int main(){
 	vector<int> s = { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-	quik_sort(0, s.size()-1, s);
+	quick_sort(0, s.size()-1, s);
 	for (int i = 0; i < s.size(); i++){
 		cout << s[i] << endl;
 	}
