@@ -1,0 +1,70 @@
+/*
+	KMP算法——字符串匹配
+	设i为子串指针，j为父串指针，在父串中匹配子串的过程j永不回退，i回退；
+	next数组是根据子串得到的，它记录了当前字符不匹配时j回退的位置。
+	next数组中存放的值为当前字符之前的字符串中有多大长度的相同前缀和后缀
+*/
+#include<string>
+#include<vector>
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+void GetNext(string& s, vector<int>& next){
+	int f = -1;  // 前缀的指针
+	int b = 0;  // 后缀的指针
+	int len = s.size();
+	next[0] = -1;
+	while (b < len-1){
+		// 初始f=-1,b=0。开始匹配前缀和后缀，匹配上了next值相同，上一个匹配上但是当前没有匹配上next值为f值，f回退。
+		if (f == -1 || s[f] == s[b]){
+			f++;
+			b++;
+			if (s[f] == s[b]){
+				next[b] = next[f];  // 上一个匹配上，当前前缀与后缀匹配成功，后缀中的字符与父串失配时，回退取决于前缀中的对应字符
+			}
+			else{
+				next[b] = f;  // 上一个匹配上，当前前缀与后缀失配，后缀中的字符与父串失配时，回退位置为该失配的位置。
+			}
+		}
+		else{
+			f = next[f]; 
+		}
+	}
+}
+
+int main()
+{
+	string s = "ABCDABDF";
+	int len = s.size();
+	vector<int> next(len,0);
+	GetNext(s, next);
+	for (int i = 0; i < len; i++){
+		cout << next[i] << endl;
+	}
+
+	string s_f = "FFFABCDABDFF";
+	int len_f = s_f.size();
+	int i = 0, j = 0;
+	if (len == 0 || len_f == 0){
+		cout << "false" << endl;
+	}
+	while (i < len_f && j < len){
+		if (j == -1 || s_f[i] == s[j]){
+			// 子串指针回退到开头都没匹配上 || 当前字符匹配成功
+			i++;
+			j++;
+		}
+		else{
+			// 当前字符没有匹配成功，回退子串指针
+			j = next[j];
+		}
+	}
+	if (j == len){
+		cout << i-j << endl;
+	}
+	else{
+		cout << "false" << endl;
+	}
+	system("pause");
+	return 0;
+}
