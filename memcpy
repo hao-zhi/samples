@@ -1,0 +1,36 @@
+#include <cassert>
+#include <string>
+#include <iostream>
+using namespace std;
+
+void *memcpy1(void *dst, const void *src, size_t len){
+	assert(dst != nullptr && src != nullptr);
+	char *pdst = (char *)dst;
+	char *psrc = (char *)src;
+	cout << "len: " << len << endl;
+	if (pdst > psrc && pdst < psrc + len){
+		// 从后往前拷贝
+		pdst += len;
+		psrc += len;
+		while (len-- > 0){
+			*pdst-- = *psrc--;
+		}
+	}
+	else{
+		// 从前往后拷贝
+		while (len-- > 0){
+			*pdst++ = *psrc++;
+		}
+	}
+	return dst;
+}
+
+int main(){
+	string s = "haozhi";
+	size_t len = s.size();
+	string d(len,' ');
+	auto ret = memcpy1((char *)d.c_str(), s.c_str(), len);
+	cout << "s: " << s  << "   d: " << d << endl;
+	system("pause");
+	return 0;
+}
